@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import Login from "./routes/login"
 import dotenv from "dotenv";
 import cors from 'cors'
+
 dotenv.config({ path: "./.env" });
 const app = express()
 app.use(cors());

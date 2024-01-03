@@ -3,17 +3,20 @@ import Button from '@mui/material/Button';
 import styled, { keyframes } from 'styled-components';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 export const SignUp = () => {
+  const navigate = useNavigate();
 
     const { register, handleSubmit } = useForm({
         shouldUseNativeValidation: true,
       })
+
       const onSubmit = async (data:any) => {
-       axios.post('/newUser',{
-        firstName: data.firstName,
-        lastName: data.lastName,
+       axios.post('http://localhost:3001/login/addNewUser',{
+      name: data.firstName +" "+ data.lastName,
         password: data.password,
        })
+       navigate("/")
       }
     return ( 
         <MainDiv>
@@ -54,7 +57,7 @@ export const SignUp = () => {
     
     const MainDiv = styled.div`
      width: 100%;
-     height: 1100px;
+     height: 100vh;
      display: flex;
      align-items: center;
     justify-content: center;

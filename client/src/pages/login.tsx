@@ -60,7 +60,7 @@ animation: ${exampleAnimation} 4s infinite; /* infinite for continuous animation
 
 const MainDiv = styled.div`
  width: 100%;
- height: 1100px;
+ height: 100vh;
  display: flex;
  align-items: center;
 justify-content: center;
