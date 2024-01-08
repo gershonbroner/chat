@@ -16,11 +16,15 @@ export  const Login =()=> {
         {
         userName: data.Name,
         password: data.password,
-       }
+       },{withCredentials:true}
        ).then((res)=>{
-console.log(res.data);
-
-       })
+          navigate("/homepage")
+        }).catch(({response})=>{
+          if(response.status === 404){
+          console.log("user not found");
+          }
+        }
+        )
       }
     return ( 
     <MainDiv>

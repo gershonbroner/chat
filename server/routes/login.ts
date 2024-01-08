@@ -4,27 +4,33 @@ import { v4 as uuidv4 } from 'uuid';
 import db from "../db/db";
 const router = Router();
 
-const posts = [
-    {
-        userName:"gershon broner"
-    },
-    {
-        userName:"naama broner"
-    }
-]
-// get name/password of user check if exits on DB and create token for hime 
+
 router.post("/authenticationANDtoken", async (req: Request, res: Response) => {
-    // here need check if user by name and password ...//
-const secret:any= process.env.ACCESS_TOKEN_SECRET ;
-const userName =req.body.userName
-const user ={name:userName}
-const accessToken = jwt.sign(user,secret)
-res.json({accessToken: accessToken })
+// check if user exits
+    const result = await db('users')
+    .where({
+      name: req.body.userName,
+      password: req.body.password,
+    })
+    .select('name')
+    
+    if(result.length === 0){
+     return res.status(404).send("Wrong username or password")
+    }
+    else{      
+ const secret:any= process.env.ACCESS_TOKEN_SECRET ;
+ const userName =req.body.userName
+ const user ={name:result[0].name}
+ const accessToken = jwt.sign(user,secret)
+res.cookie('token', accessToken, {
+    expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000), 
+  });
+  return res.status(200).send("send token to cookie")
+ }
 })
 router.get("/getRequest", authenticateToken, async (req: Request, res: Response) => {
-res.json(posts.filter(post => post.userName === req.user.name ))
+res.json(req.user.name )
 })
- // insert new user ...
  router.post('/addNewUser',async (req: Request, res:Response)=>{
     const user = {...req.body,id:uuidv4()}
         try{
@@ -36,6 +42,7 @@ res.json(posts.filter(post => post.userName === req.user.name ))
             return res.status(500).send(`Error when creating the user ${err}`)
         }
  })
+
 // middleware for authentication token
 function authenticateToken(req: Request,res:Response,next:NextFunction){
 const secret:any= process.env.ACCESS_TOKEN_SECRET 
@@ -48,4 +55,5 @@ jwt.verify(token,secret,(err:any,user:any)=>{
 next()
 })
 }
+
 export default router;
