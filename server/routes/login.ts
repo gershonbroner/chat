@@ -12,7 +12,8 @@ router.post("/authenticationANDtoken", async (req: Request, res: Response) => {
       name: req.body.userName,
       password: req.body.password,
     })
-    .select('name')
+    .first(); 
+    console.log(result);
     
     if(result.length === 0){
      return res.status(404).send("Wrong username or password")
@@ -20,12 +21,12 @@ router.post("/authenticationANDtoken", async (req: Request, res: Response) => {
     else{      
  const secret:any= process.env.ACCESS_TOKEN_SECRET ;
  const userName =req.body.userName
- const user ={name:result[0].name}
+ const user ={name:result.name}
  const accessToken = jwt.sign(user,secret)
 res.cookie('token', accessToken, {
     expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000), 
   });
-  return res.status(200).send("send token to cookie")
+  return res.status(200).send({ message:"send token to cookie",dataUser:result})
  }
 })
 router.get("/getRequest", authenticateToken, async (req: Request, res: Response) => {

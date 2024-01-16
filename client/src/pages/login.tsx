@@ -5,7 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 
-export  const Login =()=> {
+interface Props {
+  funcToSetId: (data:any)=>any   ;
+}
+export  const Login =({funcToSetId}:Props)=> {
 
     const navigate = useNavigate();
     const { register, handleSubmit } = useForm({
@@ -18,7 +21,8 @@ export  const Login =()=> {
         password: data.password,
        },{withCredentials:true}
        ).then((res)=>{
-          navigate("/homepage")
+      localStorage.setItem("dataUser", JSON.stringify(res.data.dataUser));
+   funcToSetId(res.data.dataUser)
         }).catch(({response})=>{
           if(response.status === 404){
           console.log("user not found");
