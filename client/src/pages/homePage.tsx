@@ -8,6 +8,8 @@ import { Button } from '@mui/material';
 import { useSocket } from '../socket';
 import { Socket } from 'socket.io-client';
 import { useNavigate } from 'react-router-dom';
+import { InputMessageAndSend } from '../components/inputMessageAndSend';
+import { DisplayChat } from '../components/displayChat';
  export interface DataUser {
   name:String ,
  created_at:String ,
@@ -20,8 +22,8 @@ export const HomePage = () => {
   const navigate = useNavigate();
   const [usersSelected,setUsersSelected]= useState<DataUser[]>([])
   const [currentUser,setCurrentUser] = useState<DataUser>()
-  const socket:any = useSocket()
-  const [test,SettingsEthernet]=useState("gb")
+ 
+  
   // test for token
     const sendRequest = async() =>{
         const cookies = document.cookie;
@@ -49,23 +51,13 @@ const handleChat = (key:any) => {
    setCurrentUser((prev) => ({...prev,...usersSelected[key] }));
    console.log(currentUser);
    
-}
-const testsocket = () =>{
-  socket?.emit('send_request','hello world');
-}
-useEffect(()=>{
-  socket.on('receive_message',(data:any)=>{
-    SettingsEthernet(data.data)
-  })
-},[socket])
 
-useEffect(()=>{
-  console.log(socket);
-},[])
+   
+}
+ 
+ 
     return (
-    <MainDiv>
-      {test}
-      <button onClick={testsocket}>sendrequest</button>   
+    <MainDiv> 
       <SelectUserDive>
       <Menu SetUserSelected={SetUserSelected}/> 
       <ListOfUsersSelect handleChat={handleChat} userSelected={usersSelected}/>
@@ -78,14 +70,15 @@ useEffect(()=>{
           currentUser? <DisplayUserOnChat user={currentUser}/>
           : ""
         }
-        
+      <DisplayChat idOfUser={currentUser?.id}/>
+      <InputMessageAndSend id={currentUser?.id}/>
        </ChatDive>
     </MainDiv>
     )
 }
 const MainDiv = styled.div`
  width: 100%;
- height: 100vh;
+ height: 98vh;
  display: flex;
 flex-direction: row ;
 ` ;
@@ -94,6 +87,8 @@ const ChatDive = styled.div`
 width : 75% ;
 height: 100% ;
 display: flex ;
+flex-direction:column;
+align-items:center;
 border: 2px solid white;
 margin-bottom: 20px;
 background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,233,186,0.700717787114846) 100%);

@@ -21,7 +21,7 @@ export  const Login =({funcToSetId}:Props)=> {
         password: data.password,
        },{withCredentials:true}
        ).then((res)=>{
-      localStorage.setItem("dataUser", JSON.stringify(res.data.dataUser));
+      localStorage.setItem("chat-clone-dataUser", JSON.stringify(res.data.dataUser.id));
    funcToSetId(res.data.dataUser)
         }).catch(({response})=>{
           if(response.status === 404){

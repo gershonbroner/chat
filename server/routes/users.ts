@@ -14,6 +14,5 @@ router.get("/getuserSearch", async (req: Request, res: Response) => {
     console.log("Error in getting user : ", err);
     return res.status(500).json({"error": "Internal Server Error"})
    }
-    })
-
+    }) 
     export default router;
