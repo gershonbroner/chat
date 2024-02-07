@@ -21,7 +21,7 @@ export  const Login =({funcToSetId}:Props)=> {
         password: data.password,
        },{withCredentials:true}
        ).then((res)=>{
-      localStorage.setItem("chat-clone-dataUser", JSON.stringify(res.data.dataUser.id));
+      
    funcToSetId(res.data.dataUser)
         }).catch(({response})=>{
           if(response.status === 404){
@@ -34,7 +34,6 @@ export  const Login =({funcToSetId}:Props)=> {
     <MainDiv>
      <AnimatedDiv>wellcome</AnimatedDiv>
     <LoginDiv onSubmit={handleSubmit(onSubmit)}> 
-  
     <TextField label='enter your name' variant='filled' {...register("Name", {
           required: "Please enter your  name.",
         })}  />

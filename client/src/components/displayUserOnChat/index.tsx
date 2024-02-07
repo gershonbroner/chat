@@ -1,15 +1,15 @@
 import { Avatar, Typography } from "@mui/material"
 import styled from "styled-components"
-import { DataUser } from '../../pages/homePage'
+ 
  
 interface Props {
-    user: DataUser;
+   chatSelect: any;
   }
+export default function DisplayUserOnChat ({chatSelect}:Props) {  
   
-export default function DisplayUserOnChat ({user}:Props) {  
  return(
  <MainDive>
-    <Typography variant="h4" color='white' >{user.name}</Typography> 
+    <Typography variant="h4" color='white' >{chatSelect.secondUser.name}</Typography> 
     <Avatar alt="propile" src="" sx={{marginLeft:"20px"}}/>
  </MainDive>
     )

@@ -33,7 +33,7 @@ router.get("/getRequest", authenticateToken, async (req: Request, res: Response)
 res.json(req.user.name )
 })
  router.post('/addNewUser',async (req: Request, res:Response)=>{
-    const user = {...req.body,id:uuidv4()}
+    const user = {...req.body}
         try{
             await db("users").insert(user)
             return res.status(201).send("user added") 
@@ -43,7 +43,7 @@ res.json(req.user.name )
             return res.status(500).send(`Error when creating the user ${err}`)
         }
  })
-
+ 
 // middleware for authentication token
 function authenticateToken(req: Request,res:Response,next:NextFunction){
 const secret:any= process.env.ACCESS_TOKEN_SECRET 
