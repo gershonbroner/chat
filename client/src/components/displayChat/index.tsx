@@ -7,22 +7,23 @@ interface Props{
   currentChat:any;
 }
 export const DisplayChat = ({currentChat}:Props) => { 
-  const [imageUrl, setImageUrl] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null);
   const messageContainerRef = useRef<any>(null);
    const [myId] = useLocalStorage("id")
    useEffect(() => {
-
-
     scrollToBottom();
   }, [currentChat]);
+  useEffect(() => {
+    scrollToBottom();
+  }, []);
 
   // Function to scroll to the bottom of the message container
   const scrollToBottom = () => {
-    if (messageContainerRef.current) {
+    
       messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
-    }
+   
   };
-  const [selectedFile, setSelectedFile] = useState(null);
+   
 
   const handleFileChange = (event:any) => {
     setSelectedFile(event.target.files[0]);
@@ -80,19 +81,10 @@ return(
            </div>
       
      )
+
 )):""
 }
 </div>
-    
-   {/* <button onClick={getImg}>get Image</button>
-  <img src={"http://localhost:3001/images/istory.PNG"} alt="oo" /> */}
-      <div>
-      {/* <button onClick={getImg}>Get Images</button>
-      {imageUrls? imageUrls.map((imageUrl, index) => (
-        <img key={index} src={`http://localhost:3001${imageUrl}`} alt={`Image ${index}`} />
-      )):""} */}
-    </div>
-
    </>
 )
 }

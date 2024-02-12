@@ -4,12 +4,13 @@ import styled, { keyframes } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-
+import Alert from '@mui/material/Alert';
+import { useState } from 'react';
 interface Props {
   funcToSetId: (data:any)=>any   ;
 }
 export  const Login =({funcToSetId}:Props)=> {
-
+  const  [alert,setAlert]  = useState(false)
     const navigate = useNavigate();
     const { register, handleSubmit } = useForm({
         shouldUseNativeValidation: true,
@@ -21,11 +22,10 @@ export  const Login =({funcToSetId}:Props)=> {
         password: data.password,
        },{withCredentials:true}
        ).then((res)=>{
-      
    funcToSetId(res.data.dataUser)
         }).catch(({response})=>{
           if(response.status === 404){
-          console.log("user not found");
+           setAlert(true)
           }
         }
         )
@@ -41,6 +41,11 @@ export  const Login =({funcToSetId}:Props)=> {
           required: "Please enter your password.",
         })}  />
     <Button type='submit' variant='contained'>התחברות</Button>
+   { alert?<Alert variant="filled" severity="warning" onClose={()=>setAlert(false)}>
+        not exists this user
+      </Alert>
+      :""
+}
     <Button variant='text' onClick={()=> navigate("/signup")}>לא רשום? לחץ כאן</Button>
     </LoginDiv>
     </MainDiv>

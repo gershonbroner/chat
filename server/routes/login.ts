@@ -6,7 +6,6 @@ const router = Router();
 
 
 router.post("/authenticationANDtoken", async (req: Request, res: Response) => {
-// check if user exits
     const result = await db('users')
     .where({
       name: req.body.userName,
@@ -14,8 +13,7 @@ router.post("/authenticationANDtoken", async (req: Request, res: Response) => {
     })
     .first(); 
     console.log(result);
-    
-    if(result.length === 0){
+    if(!result){
      return res.status(404).send("Wrong username or password")
     }
     else{      
@@ -32,18 +30,16 @@ res.cookie('token', accessToken, {
 router.get("/getRequest", authenticateToken, async (req: Request, res: Response) => {
 res.json(req.user.name )
 })
- router.post('/addNewUser',async (req: Request, res:Response)=>{
+router.post('/addNewUser',async (req: Request, res:Response)=>{
     const user = {...req.body}
         try{
             await db("users").insert(user)
             return res.status(201).send("user added") 
         }
         catch(err){
-            console.log('error in adding a new user to the database')
             return res.status(500).send(`Error when creating the user ${err}`)
         }
  })
- 
 // middleware for authentication token
 function authenticateToken(req: Request,res:Response,next:NextFunction){
 const secret:any= process.env.ACCESS_TOKEN_SECRET 

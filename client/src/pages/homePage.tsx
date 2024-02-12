@@ -119,7 +119,7 @@ setConversationsOfList(data.data)
         
         {currentChat? <DisplayUserOnChat chatSelect={currentChat}/>:""}
         {currentChat?<DisplayChat currentChat={currentChat}/>:""}
-         <InputMessageAndSend currentChat={currentChat}/>
+         {currentChat?<InputMessageAndSend currentChat={currentChat}/>:""}
        </ChatDive>
     </MainDiv>
     )

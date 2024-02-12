@@ -48,7 +48,6 @@ router.post('/addConversation',async (req: Request, res:Response)=>{
         return res.status(201).send("conversations added") 
     }
     catch(err){
-        console.log('error')
         return res.status(500).send(`Error when creating the user ${err}`)
     }
     
@@ -57,8 +56,6 @@ router.post('/addConversation',async (req: Request, res:Response)=>{
 router.post('/findUserAndAddConversation', async (req: Request, res: Response) => {
     try {
         const { myId, userSearch } = req.body;
-
-        // Search for the user based on the provided search string
         const user = await db('users')
             .select('*')
             .where('name', 'ILIKE', `%${userSearch}%`)
@@ -67,17 +64,11 @@ router.post('/findUserAndAddConversation', async (req: Request, res: Response) =
         if (!user) {
             return res.status(404).send("User not found");
         }
-
-        // Define the new conversation object
         const newConversation = {
             IDsensed: myId,
             IDgetter: user.id,
         };
-
-        // Insert the new conversation into the database
         await db("conversations").insert(newConversation);
-
-        // Retrieve the conversation after inserting
         const conversation: any = await db
             .select('conversations.*')
             .from('conversations')
@@ -94,12 +85,8 @@ router.post('/findUserAndAddConversation', async (req: Request, res: Response) =
         const messages = await db.select('*')
             .from('messages')
             .where('IdConversation', conversation.id);
-
-       
         conversation.messages = messages;
         conversation.secondUser = user;
-
-      
         return res.status(201).send(conversation);
     } catch (err) {
         console.log('error', err);
